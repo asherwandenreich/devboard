@@ -14,4 +14,14 @@ Ran ERC (Inspect > Electrical Rules Checker, it's the ladybug icon, there's no h
 
 Tried placing an STM32F103 as the brain, then decided on what I actually want this board to do: drive a small color screen that plays GIFs and shows download progress, with the board downloading things itself over Wi-Fi. The STM32F103 only has 20KB of RAM (way too little for GIFs) and neither it nor the RP2040 has Wi-Fi. Switching to an ESP32-S3-WROOM-1 module, which already has the chip, flash, crystal, and antenna inside it, so the board actually gets simpler. Wi-Fi pulls bursts of up to around 500mA though and the XC6206 can only do about 200mA, so the regulator is getting swapped for an AP2112K-3.3 (600mA).
 
-Next: wire up the ESP32-S3 with reset and boot buttons, and add a header for an ST7789 240x240 screen.
+Swapped the regulator with "Change Symbol" and found out the Value field keeps the old text, so it still said XC6206 even though the symbol was the AP2112K. That's the name that goes on the parts list, so I would've ordered the wrong chip. Tied the AP2112K's EN pin to VBUS so it's always on, and bumped the output cap to 10uF for the Wi-Fi bursts.
+
+Placed the ESP32-S3-WROOM-1 and messed up the power on my first try. I wired its 3V3 pin to a capacitor and its GND pins to the other side of a capacitor, which looked connected but wasn't actually on the 3.3V or GND nets. A capacitor isn't a wire. Fixed it by putting the +3V3 and GND power symbols right on the pins.
+
+Added a reset circuit on EN (10k pullup to 3.3V, 1uF to ground so the chip waits for power to settle, and a button to ground) and a BOOT button on IO0 for download mode. Connected the USB data lines to the ESP32 with labels. Learned labels only connect to other labels with the exact same name, so you need one on both ends.
+
+Added an 8 pin header for the screen (GND, 3.3V, then IO7 to IO12 for SPI clock, data, reset, DC, chip select, and backlight) and a 7 pin header that breaks out IO1, IO2, IO4, IO5, IO6 as spare pins, since this is a devboard and the point is plugging stuff in. Avoided the strapping pins (IO0, IO3, IO45, IO46) because the chip reads them on startup to decide how to boot. Put no-connect X's on every other unused pin.
+
+Got ERC from 46 errors down to 0.
+
+Next: Update PCB from Schematic, place the parts, and route the traces.
