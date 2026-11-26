@@ -24,4 +24,12 @@ Added an 8 pin header for the screen (GND, 3.3V, then IO7 to IO12 for SPI clock,
 
 Got ERC from 46 errors down to 0.
 
+Then decided I want this to double as a USB hub for my wireless mouse and keyboard receivers. First thought was a male USB-C plug so it plugs straight into my MacBook, but a board with a screen and two USB-A ports hanging off a laptop port is basically a lever that can break the port, so I'm keeping the USB-C port and using a short C to C cable. USB data can only go to one thing at a time, so to have the mouse, keyboard, and ESP32 all connected at once I added a CH334R hub chip. One upstream port goes to the USB-C, port 1 and 2 go to two USB-A ports, port 3 goes to the ESP32, and port 4 is unused. Bonus is the ESP32 stays connected to my Mac while I use the mouse and keyboard.
+
+The hub needs a 12MHz crystal (a tiny piece of quartz that vibrates at an exact frequency so the USB timing is right) with a small capacitor from each side to ground. I first wired the capacitors in line between the crystal and the chip, which blocks it completely, and set them to 1uF which is about 50,000 times too big. Fixed both, they're 20pF for now until I pick the actual crystal (the right value depends on its load capacitance). Also accidentally renamed the USB-A ports to J2 and J3, which were already my headers, so KiCad merged them. Every part needs a unique reference, they're J4 and J5 now.
+
+Learned VDD just means a chip's power pin (the D is from "drain" on a transistor), and a capacitor on a power pin always goes from that pin to ground since it stores energy as the voltage difference between its two legs. It doesn't short anything because the plates inside have a gap, so steady current can't get through.
+
+ERC back to 0, 24 parts.
+
 Next: Update PCB from Schematic, place the parts, and route the traces.
