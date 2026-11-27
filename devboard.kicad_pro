@@ -535,6 +535,24 @@
         "via_diameter": 0.6,
         "via_drill": 0.3,
         "wire_width": 6
+      },
+      {
+        "name": "Power",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 1,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.5,
+        "tuning_profile": ""
+      },
+      {
+        "diff_pair_gap": 0.2,
+        "diff_pair_width": 0.3,
+        "name": "USB",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 0,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.3,
+        "tuning_profile": ""
       }
     ],
     "meta": {
@@ -542,7 +560,40 @@
     },
     "net_colors": {},
     "netclass_assignments": {},
-    "netclass_patterns": []
+    "netclass_patterns": [
+      {
+        "netclass": "Power",
+        "pattern": "VBUS"
+      },
+      {
+        "netclass": "Power",
+        "pattern": "+3V3"
+      },
+      {
+        "netclass": "Power",
+        "pattern": "GND"
+      },
+      {
+        "netclass": "USB",
+        "pattern": "/USB_D+"
+      },
+      {
+        "netclass": "USB",
+        "pattern": "/USB_D-"
+      },
+      {
+        "netclass": "USB",
+        "pattern": "/ESP_D*"
+      },
+      {
+        "netclass": "USB",
+        "pattern": "/A1_D*"
+      },
+      {
+        "netclass": "USB",
+        "pattern": "/A2_D*"
+      }
+    ]
   },
   "pcbnew": {
     "last_paths": {
